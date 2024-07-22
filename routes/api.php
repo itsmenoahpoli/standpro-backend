@@ -3,11 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SystemController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PaymentsController;
 use App\Http\Controllers\Api\Admin\AccountsController;
 use App\Http\Controllers\Api\Admin\RolesController;
-use App\Http\Controllers\Api\Admin\Patients\PatientAppointmentsController;
-use App\Http\Controllers\Api\Admin\Patients\PatientInformationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +36,6 @@ Route::prefix('v1')->middleware('verify.api-key')->group(function () {
     });
 
     /**
-     * Payment Routes
-     */
-    Route::prefix('payments')->group(function() {
-        Route::post('paymongo/pay', [PaymentsController::class, 'paymongoCreatePayment'])->name('payments.paymongo-pay');
-    });
-
-    /**
      * Admin Routes
      */
     Route::prefix('admin')->middleware(['auth:sanctum', 'role.admin'])->group(function () {
@@ -61,12 +51,5 @@ Route::prefix('v1')->middleware('verify.api-key')->group(function () {
         Route::patch('accounts/{accountId}role/assign/{userRoleId}', [AccountsController::class, 'assignRoleToAccount']);
         Route::patch('accounts/{accountId}role/unassign', [AccountsController::class, 'unassignRoleToAccount']);
 
-        /**
-         * Patients data
-         */
-        Route::apiResources([
-            'patient-appointments' => PatientAppointmentsController::class,
-            'patient-informations' => PatientInformationsController::class
-        ]);
     });
 });
