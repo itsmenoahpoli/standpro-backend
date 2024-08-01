@@ -3,21 +3,15 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Repositories\BaseRepositoryInterface;
-use App\Observers\BaseModelObserver;
+use App\Repositories\_Interfaces\BaseRepositoryInterface;
 
 class BaseRepository implements BaseRepositoryInterface
 {
     private $eloquentModel;
-    private $cacheTTL = 60;
 
     public function __construct(
         private readonly Model $model,
-        private string $cacheKey,
         private readonly array $relationships,
         private readonly array $showRelationshipsInList,
         private readonly array $searchFilters = [],
@@ -26,101 +20,56 @@ class BaseRepository implements BaseRepositoryInterface
     )
     {
         $this->eloquentModel = $this->model->query();
-        $this->model::observe(function() {
-            return new BaseModelObserver($this->cacheKey);
-        });
     }
 
     public function getListUsingQueryBuilder()
     {
-        $result = QueryBuilder::for($this->eloquentModel)
-                ->allowedFilters($this->searchFilters)
-                ->defaultSort('-id')
-                ->allowedSorts($this->sortFilters)
-                ->allowedIncludes($this->relationships)
-                ->get();
-
-        return $result;
+        return QueryBuilder::for($this->eloquentModel)
+            ->allowedFilters($this->searchFilters)
+            ->defaultSort('-id')
+            ->allowedSorts($this->sortFilters)
+            ->allowedIncludes($this->relationships)
+            ->get();
     }
 
     public function getPaginated($page = 1, $pageSize = 25, $orderBy = 'created_at', $sortBy = 'asc')
     {
-        $result = $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->paginate($pageSize);
-
-        return Cache::remember($this->cacheKey, $this->cacheTTL, function () use ($result) {
-                return $result;
-            }
-        );
+        return $this->eloquentModel->with(
+                $this->showRelationshipsInList
+            )
+            ->orderBy(
+                $orderBy, $sortBy
+            )->paginate(
+                $pageSize
+            );
     }
 
     public function getUnpaginated($orderBy = 'id', $sortBy = 'desc')
     {
-        $result = $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->get();
-
-        return Cache::remember($this->cacheKey, $this->cacheTTL, function () use ($result) {
-                return $result;
-            }
-        );
+        return $this->eloquentModel->with(
+                $this->showRelationshipsInList
+            )->orderBy(
+                $orderBy, $sortBy
+            )->get();
     }
 
     public function create($data)
     {
-        DB::beginTransaction();
-
-        try
-        {
-            $result = $this->model->create($data);
-
-            DB::commit();
-
-            return $result;
-        } catch (\Exception $err)
-        {
-            DB::rollback();
-            throw new HttpException(500, $err->getMessage());
-        }
+        return $this->model->query()->create($data);
     }
 
-    public function updateById($id, $data)
+    public function updateById($id, $data, $file = null)
     {
-        DB::beginTransaction();
-
-        try
-        {
-            $result = tap($this->model->find($id))->update($data)->first();
-
-            DB::commit();
-
-            return $result;
-        } catch (\Exception $err)
-        {
-            DB::rollback();
-            throw new HttpException(500, $err->getMessage());
-        }
+        return tap($this->model->query()->find($id))->update($data)->first();
     }
 
     public function getById($id)
     {
-        $result = $this->model->with($this->relationships)->find($id);
-
-        return $result;
+        return $this->model->query()->with($this->relationships)->find($id);
     }
 
     public function deleteById($id)
     {
-        DB::beginTransaction();
-
-        try
-        {
-            $result = $this->model->findOrFail($id)->delete();
-
-            DB::commit();
-
-            return $result;
-        } catch (\Exception $err)
-        {
-            DB::rollback();
-            throw new HttpException(500, $err->getMessage());
-        }
+        return $this->model->query()->findOrFail($id)->delete();
     }
 }

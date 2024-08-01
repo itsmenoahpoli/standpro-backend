@@ -1,51 +1,42 @@
-## Learning Management System
+<h1>Image/Video Content Management System</h1>
+<p>Built with Laravel 11 (PHP), Vuejs (JavaScript/TypeScript), TailwindCss, MySQL</p>
+<hr />
 
----
-
-Installation Guide
+<h5>Installation and setup guide</h5>
 
 ```bash
-git clone https://github.com/itsmenoahpoli/lms-web-backend.git
 
-cd lms-web-backend
+git clone https://github.com/itsmenoahpoli/BBCCC-cms.git
+
+cd BBCCC-cms
 
 composer install
 
-cp .env.example .env # Open .env then set the mysql database credentials
+npm install
+
+npm run dev # Dev build
+# or
+npm run build # Production build
+
+# After running this command, open .env and set the database credentials
+cp .env.example .env
 
 php artisan key:generate
 
-npm install
+php artisan migrate --seed
 
-# Open two terminal/command line with the project's directory
-# then run these command on each
+php artisan storage:link
 
-# Terminal 1
 php artisan serve
-
-# Terminal 2
-npm run dev
 ```
 
----
+<br />
+<h5>List of functions/modules</h5>
 
-<small>Modules:</small>
+-   [x] Authentication
+-   [ ] Manage contents (images/videos)
+-   [ ] Dashboard user interface
+-   [ ] Secured API endpoints
 
-Admin
--Login
--Manage Users
--Upload 3D Virtual Activities
--Adds instruction on virtual lab activities
-Instructor
--Login
--Manage students
--generate lectures and quizzes
--assess student performances
--Track student progress
-Students
--Login
--Read and Answer Lecture Quizzes
--Complete Laboratories
--View their own progress
-
----
+<hr />
+Made by Patrick Policarpio with :orange_heart:

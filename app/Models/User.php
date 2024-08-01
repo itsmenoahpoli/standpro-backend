@@ -2,52 +2,53 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, LogsActivity;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = [];
-
-    protected $hidden = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
         'password',
     ];
 
-    protected $casts = [
-        'password' => 'hashed',
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return LogOptions::defaults()->logUnguarded();
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
     public function user_role() : BelongsTo
     {
         return $this->belongsTo(\App\Models\UserRole::class);
-    }
-
-    public function user_otps() : HasMany
-    {
-        return $this->hasMany(\App\Models\UserOtp::class);
-    }
-
-    public function user_sessions() : HasMany
-    {
-        return $this->hasMany(\App\Models\UserSession::class);
-    }
-
-    public function patient_information() : HasOne
-    {
-        return $this->hasOne(\App\Models\Patients\PatientInformation::class);
     }
 }

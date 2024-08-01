@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AccountsService extends AccountsRepository
 {
     public function __construct(
-        User $model,
+        private readonly User $model,
         private readonly RolesService $rolesService
     )
     {

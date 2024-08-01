@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
-use App\Helpers\ParamsHelpers;
+use App\Helpers\ParamsHelper;
 use App\Services\Admin\AccountsService;
-use App\Http\Requests\Admin\User\CreateAccountRequest;
-use App\Http\Requests\Admin\User\UpdateAccountRequest;
+use App\Http\Requests\Admin\Account\CreateAccountRequest;
+use App\Http\Requests\Admin\Account\UpdateAccountRequest;
 
 class AccountsController extends Controller
 {
@@ -24,8 +23,8 @@ class AccountsController extends Controller
      */
     public function index(Request $request) : JsonResponse
     {
-        $params = ParamsHelpers::paginationParams($request->query());
-        $result = ParamsHelpers::hasExpectsRawList($params)
+        $params = ParamsHelper::paginationParams($request->query());
+        $result = ParamsHelper::hasExpectsRawList($params)
             ? $this->service->getUnpaginated()
             : $this->service->getPaginated(
                 $params['pageNumber'],
@@ -56,11 +55,6 @@ class AccountsController extends Controller
     {
         $result = $this->service->getById($id);
 
-        if (!$result)
-        {
-            throw new NotFoundHttpException('NOT_FOUND');
-        }
-
         return response()->json($result, Response::HTTP_OK);
     }
 
@@ -71,7 +65,7 @@ class AccountsController extends Controller
     {
         $result = $this->service->updateById(
             $id,
-            $request->safe($request->validated)
+            $request->validated()
         );
 
         return response()->json($result, Response::HTTP_OK);

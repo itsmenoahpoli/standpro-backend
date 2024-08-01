@@ -14,18 +14,6 @@ class RolesRepository extends BaseRepository
 
     )
     {
-        parent::__construct(
-            $model,
-            'model-user-role',
-            $relationships,
-            $shownRelationshipsInList,
-            [],
-            []
-        );
-    }
-
-    public function findByName($name)
-    {
-        return $this->model->query()->where('name', $name)->first();
+        parent::__construct($model, $relationships, $shownRelationshipsInList);
     }
 }
