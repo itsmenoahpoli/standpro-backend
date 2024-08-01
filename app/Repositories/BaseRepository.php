@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Repositories\_Interfaces\BaseRepositoryInterface;
+use App\Repositories\BaseRepositoryInterface;
 
 class BaseRepository implements BaseRepositoryInterface
 {
@@ -58,9 +58,11 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->query()->create($data);
     }
 
-    public function updateById($id, $data, $file = null)
+    public function updateById($id, $data)
     {
-        return tap($this->model->query()->find($id))->update($data)->first();
+        $this->model->query()->find($id)->update($data);
+
+        return $this->getById($id);
     }
 
     public function getById($id)
