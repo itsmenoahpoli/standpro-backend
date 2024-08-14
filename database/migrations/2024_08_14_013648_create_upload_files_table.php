@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('upload_folder_id')->constrained('upload_folders')->cascadeOnDelete();
             $table->string('name')->unique();
-            $table->string('name_string')->unique();
+            $table->string('name_slug')->unique();
             $table->string('file_type');
             $table->text('path');
             $table->timestamps();

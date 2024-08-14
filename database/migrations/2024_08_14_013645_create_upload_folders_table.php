@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('upload_folders', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('name_string')->unique();
+            $table->string('name_slug')->unique();
             $table->string('path');
             $table->timestamps();
         });
