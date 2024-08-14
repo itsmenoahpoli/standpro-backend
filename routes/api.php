@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\AccountsController;
 use App\Http\Controllers\Api\Admin\RolesController;
 
-Route::prefix('v1')->group(function() {
+Route::prefix('v1')->middleware(['auth:sanctum'])->group(function() {
     Route::get('healthcheck', [SystemController::class, 'healthcheck'])->name('api.healthcheck');
     Route::post('testmail', [SystemController::class, 'testmail'])->name('api.testmail');
 

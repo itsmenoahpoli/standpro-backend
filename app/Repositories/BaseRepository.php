@@ -22,35 +22,14 @@ class BaseRepository implements BaseRepositoryInterface
         $this->eloquentModel = $this->model->query();
     }
 
-    public function getListUsingQueryBuilder()
-    {
-        return QueryBuilder::for($this->eloquentModel)
-            ->allowedFilters($this->searchFilters)
-            ->defaultSort('-id')
-            ->allowedSorts($this->sortFilters)
-            ->allowedIncludes($this->relationships)
-            ->get();
-    }
-
     public function getPaginated($page = 1, $pageSize = 25, $orderBy = 'created_at', $sortBy = 'asc')
     {
-        return $this->eloquentModel->with(
-                $this->showRelationshipsInList
-            )
-            ->orderBy(
-                $orderBy, $sortBy
-            )->paginate(
-                $pageSize
-            );
+        return $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->paginate($pageSize);
     }
 
     public function getUnpaginated($orderBy = 'id', $sortBy = 'desc')
     {
-        return $this->eloquentModel->with(
-                $this->showRelationshipsInList
-            )->orderBy(
-                $orderBy, $sortBy
-            )->get();
+        return $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->get();
     }
 
     public function create($data)

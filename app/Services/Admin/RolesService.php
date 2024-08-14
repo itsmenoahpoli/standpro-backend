@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Models\UserRole;
+use App\Models\Users\UserRole;
 use App\Repositories\Admin\RolesRepository;
 
 class RolesService extends RolesRepository

@@ -12,7 +12,7 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->create([
+        User::query()->firstOrCreate([
             'name'      => 'Admin Account',
             'username'  => 'adminuser',
             'email'     => 'admin@domain.com',
