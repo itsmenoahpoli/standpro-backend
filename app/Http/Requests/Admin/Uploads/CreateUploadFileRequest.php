@@ -11,7 +11,7 @@ class CreateUploadFileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class CreateUploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'upload_folder_id'  => 'int|required',
+            'name'              => 'string|required|unique:upload_files',
+            'description'       => 'string|required',
+            'files'             => 'required|array'
         ];
     }
 }
