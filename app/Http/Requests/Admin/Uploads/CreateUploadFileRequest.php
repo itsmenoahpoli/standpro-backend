@@ -22,7 +22,7 @@ class CreateUploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'upload_folder_id'  => 'int|required',
+            'upload_folder_id'  => 'int|nullable',
             'name'              => 'string|required|unique:upload_files',
             'description'       => 'string|required',
             'files'             => 'required|array'

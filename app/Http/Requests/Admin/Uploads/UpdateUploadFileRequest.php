@@ -22,7 +22,9 @@ class UpdateUploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'upload_folder_id'  => 'int|nullable',
+            'name'              => 'string|required',
+            'description'       => 'string|required',
         ];
     }
 }
