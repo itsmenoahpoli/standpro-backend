@@ -23,6 +23,7 @@ class CreateUploadFileRequest extends FormRequest
     {
         return [
             'upload_folder_id'  => 'int|nullable',
+            'type'              => 'string|required',
             'date_received'     => 'string|required',
             'time_released'     => 'string|required',
             'date_letter'       => 'string|required',
