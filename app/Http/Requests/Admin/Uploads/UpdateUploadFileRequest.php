@@ -30,6 +30,8 @@ class UpdateUploadFileRequest extends FormRequest
             'from'              => 'string|required',
             'agency'            => 'string|required',
             'received_by'       => 'string|required',
+            'name_of_folder'    => 'string|required',
+            'file'              => 'file|nullable'
         ];
     }
 }

@@ -18,12 +18,17 @@ class UploadFilesService extends UploadFilesRepository
 
     public function create($payload)
     {
-        return $payload;
+        $folderPath = $this->uploadFoldersService->getById($payload['upload_folder_id']);
 
-        // $folderPath = $this->uploadFoldersService->getById($payload['upload_folder_id']);
+        if ($folderPath) {
+            $payload['name_of_folder'] = $folderPath->name;
+        }
 
-        // return $folderPath;
+        $payload['path'] = $payload['file']->store('uploads', 'public');
+        // $payload['upload_folder_id'] = null;
 
-        // return parent::create($payload);
+        unset($payload['file']);
+
+        return parent::create($payload);
     }
 }

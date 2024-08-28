@@ -4,9 +4,9 @@ namespace App\Repositories;
 
 interface BaseRepositoryInterface
 {
-    public function getPaginated($page, $pageSize, $orderBy, $sortBy);
+    public function getPaginated($page, $pageSize, $orderBy, $sortBy, $optionalParams);
 
-    public function getUnpaginated($orderBy, $sortBy);
+    public function getUnpaginated($orderBy, $sortBy, $optionalParams);
 
     public function create($data);
 

@@ -8,8 +8,10 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Helpers\ParamsHelper;
 use App\Services\Admin\Uploads\UploadFilesService;
-use App\Http\Requests\Admin\Roles\CreateRoleRequest;
-use App\Http\Requests\Admin\Roles\UpdateRoleRequest;
+use App\Http\Requests\Admin\Uploads\CreateUploadFileRequest;
+use App\Http\Requests\Admin\Uploads\UpdateUploadFileRequest;
+
+use function PHPSTORM_META\map;
 
 class UploadFilesController extends Controller
 {
@@ -25,12 +27,13 @@ class UploadFilesController extends Controller
     {
         $params = ParamsHelper::paginationParams($request->query());
         $result = ParamsHelper::hasExpectsRawList($params)
-            ? $this->service->getUnpaginated()
+            ? $this->service->getUnpaginated('id', 'desc', $request->query())
             : $this->service->getPaginated(
                 $params['pageNumber'],
                 $params['pageSize'],
                 $params['orderBy'],
-                $params['sortBy']
+                $params['sortBy'],
+                $request->query()
             );
 
         return response()->json($result, Response::HTTP_OK);
@@ -39,10 +42,11 @@ class UploadFilesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateRoleRequest $request)
+    public function store(CreateUploadFileRequest $request)
     {
         $result = $this->service->create(
-            $request->validated()
+            $request->validated(),
+            $request->file('file')
         );
 
         return response()->json($result, Response::HTTP_CREATED);
@@ -61,7 +65,7 @@ class UploadFilesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, string $id) : JsonResponse
+    public function update(UpdateUploadFileRequest $request, string $id) : JsonResponse
     {
         $result = $this->service->updateById(
             $id,

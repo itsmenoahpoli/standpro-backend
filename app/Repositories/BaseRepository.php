@@ -22,12 +22,12 @@ class BaseRepository implements BaseRepositoryInterface
         $this->eloquentModel = $this->model->query();
     }
 
-    public function getPaginated($page = 1, $pageSize = 25, $orderBy = 'created_at', $sortBy = 'asc')
+    public function getPaginated($page = 1, $pageSize = 25, $orderBy = 'created_at', $sortBy = 'asc', $optionalParams)
     {
         return $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->paginate($pageSize);
     }
 
-    public function getUnpaginated($orderBy = 'id', $sortBy = 'desc')
+    public function getUnpaginated($orderBy = 'id', $sortBy = 'desc', $optionalParams)
     {
         return $this->eloquentModel->with($this->showRelationshipsInList)->orderBy($orderBy, $sortBy)->get();
     }

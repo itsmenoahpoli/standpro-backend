@@ -16,4 +16,13 @@ class UploadFilesRepository extends BaseRepository
     {
         parent::__construct($model, $relationships, $shownRelationshipsInList);
     }
+
+    public function getUnpaginated($orderBy = 'id', $sortBy = 'desc', $optionalParams)
+    {
+        if ($optionalParams['type']) {
+            return $this->model->query()->where('type', $optionalParams['type'])->get();
+        }
+        
+        return parent::getUnpaginated($orderBy, $sortBy, null);
+    }
 }
