@@ -2,8 +2,6 @@
 
 namespace App\Services\Admin\Uploads;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Uploads\UploadFile;
 use App\Repositories\Admin\Uploads\UploadFilesRepository;
 use App\Services\Admin\Uploads\UploadFoldersService;
@@ -20,10 +18,12 @@ class UploadFilesService extends UploadFilesRepository
 
     public function create($payload)
     {
-        $folderPath = $this->uploadFoldersService->getById($payload['upload_folder_id']);
+        return $payload;
 
-        return $folderPath;
+        // $folderPath = $this->uploadFoldersService->getById($payload['upload_folder_id']);
 
-        return parent::create($payload);
+        // return $folderPath;
+
+        // return parent::create($payload);
     }
 }

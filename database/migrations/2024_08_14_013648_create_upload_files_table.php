@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('upload_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('upload_folder_id')->nullable()->constrained('upload_folders')->cascadeOnDelete();
-            $table->string('name')->unique();
-            $table->string('name_slug')->unique();
-            $table->string('file_type');
+            $table->enum('type', ['incoming', 'outgoing']);
+            $table->string('date_received');
+            $table->string('time_released');
+            $table->string('date_letter');
+            $table->string('subject');
+            $table->string('from');
+            $table->string('agency');
+            $table->string('received_by');
+            $table->string('name_of_folder');
             $table->text('path');
             $table->timestamps();
             $table->softDeletes();

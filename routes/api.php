@@ -27,33 +27,31 @@ Route::prefix('v1')->group(function() {
     });
 
 
-    Route::middleware('auth:sanctum')->group(function() {
-        Route::get('healthcheck', [SystemController::class, 'healthcheck'])->name('api.healthcheck');
-        Route::post('testmail', [SystemController::class, 'testmail'])->name('api.testmail');
+    Route::get('healthcheck', [SystemController::class, 'healthcheck'])->name('api.healthcheck');
+    Route::post('testmail', [SystemController::class, 'testmail'])->name('api.testmail');
 
-        Route::prefix('admin')->group(function () {
-            /**
-             * Auth management
-             */
-            Route::apiResources([
-                'accounts'      => AccountsController::class,
-                'roles'         => RolesController::class,
-            ]);
+    Route::prefix('admin')->group(function () {
+        /**
+         * Auth management
+         */
+        Route::apiResources([
+            'accounts'      => AccountsController::class,
+            'roles'         => RolesController::class,
+        ]);
 
 
-            /**
-             * Assign role to account
-             */
-            Route::patch('accounts/{accountId}role/assign/{userRoleId}', [AccountsController::class, 'assignRoleToAccount']);
-            Route::patch('accounts/{accountId}role/unassign', [AccountsController::class, 'unassignRoleToAccount']);
+        /**
+         * Assign role to account
+         */
+        Route::patch('accounts/{accountId}role/assign/{userRoleId}', [AccountsController::class, 'assignRoleToAccount']);
+        Route::patch('accounts/{accountId}role/unassign', [AccountsController::class, 'unassignRoleToAccount']);
 
-            /**
-             * Files Management
-             */
-            Route::apiResources([
-                'upload-folders' => UploadFoldersController::class,
-                'upload-files' => UploadFilesController::class,
-            ]);
-        });
+        /**
+         * Files Management
+         */
+        Route::apiResources([
+            'upload-folders' => UploadFoldersController::class,
+            'record-logs' => UploadFilesController::class,
+        ]);
     });
 });
