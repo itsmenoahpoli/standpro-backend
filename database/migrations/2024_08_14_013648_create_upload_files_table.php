@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('received_by');
             $table->string('name_of_folder');
             $table->text('path');
-            $table->enum('type', ['internal', 'external']);
             $table->timestamps();
             $table->softDeletes();
         });
