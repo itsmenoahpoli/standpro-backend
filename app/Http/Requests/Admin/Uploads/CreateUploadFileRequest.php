@@ -33,7 +33,7 @@ class CreateUploadFileRequest extends FormRequest
             'received_by'       => 'string|required',
             'name_of_folder'    => 'string|required',
             'file'              => 'required',
-            'type'              => 'string|required'
+            'type_resource'     => 'string|required'
         ];
     }
 }

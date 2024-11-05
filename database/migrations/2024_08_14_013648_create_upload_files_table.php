@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('upload_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('upload_folder_id')->nullable()->constrained('upload_folders')->cascadeOnDelete();
-            $table->enum('type', ['internal', 'external']);
+            $table->enum('type', ['incoming', 'outgoing']);
+            $table->enum('type_resource', ['internal', 'external']);
             $table->string('date_received');
             $table->string('time_released');
             $table->string('date_letter');

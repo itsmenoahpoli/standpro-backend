@@ -32,7 +32,7 @@ class UpdateUploadFileRequest extends FormRequest
             'received_by'       => 'string|required',
             'name_of_folder'    => 'string|required',
             'file'              => 'file|nullable',
-            'type'              => 'string|required'
+            'type_resource'     => 'string|required'
         ];
     }
 }
