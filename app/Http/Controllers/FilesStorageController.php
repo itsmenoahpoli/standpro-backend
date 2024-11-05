@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Response;
 
 class FilesStorageController extends Controller
 {
-    public function getImageByPath(Request $request)
+    public function getFileByPath(Request $request)
     {
         $path = $request->query('path');
         $filePath = storage_path('app/public/' . $path);

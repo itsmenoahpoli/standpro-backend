@@ -7,4 +7,4 @@ use Illuminate\Support\Facades\Route;
 //     return view('index');
 // })->where('any', '^(?!api\/)[\/\w\.-]*');
 
-Route::get('assets/get', [FilesStorageController::class, 'getImageByPath']);
+Route::get('assets/get', [FilesStorageController::class, 'getFileByPath']);
